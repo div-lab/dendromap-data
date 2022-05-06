@@ -4,6 +4,8 @@
 '''
 import numpy as np
 from scipy.cluster.hierarchy import linkage
+from scipy.spatial.distance import squareform, pdist
+import copy
 
 
 class Dendrogram:
@@ -26,9 +28,11 @@ class Dendrogram:
         self.clear_cache()
         self.root = new_root
 
-    @property
-    def dict_format(self):
-        return self.root
+    def to_json(self):
+        self.clear_cache()
+        cpy = copy.deepcopy(self)
+        cpy.remove_attr("parent", "cluster")
+        return cpy.root
 
     def for_each_node(self, callback):
         def depth_first(parent):
@@ -39,19 +43,15 @@ class Dendrogram:
                 depth_first(child)
         depth_first(self.root)
 
+    def add_cluster_array_to_each_node(self):
+        add_clusters_to_nodes(self)
+
     def remove_attr(self, *name_attr):
         def _remove(node):
             for name in name_attr:
                 if name in node:
                     del node[name]
         self.for_each_node(_remove)
-
-    def export_as_json(self, filepath="default.json", indent=None):
-        import json
-        if "parent" in self.root:
-            self.remove_attr("parent")
-        with open(filepath, "w") as out:
-            json.dump(self.root, out, indent=indent)
 
 
 def get_leaves(parent):
@@ -166,6 +166,90 @@ def count_nodes(d: Dendrogram):
 
     for leaf in d.leaves:
         accumulate_up(leaf, count)
+
+
+def extract_features(instances):
+    combined = np.array([instance["features"] for instance in instances])
+    return combined
+
+
+def add_node_count(node):
+    node["node_count"] = len(node["cluster"])
+
+
+def pairwise_distance(features):
+    dists = pdist(features)
+    dists = squareform(dists)
+    return dists
+
+
+def compute_top_similar(dists, k=100):
+    similar = np.argsort(dists, axis=1)[:, 1:k+1]
+    return similar
+
+
+def instance_index_transform_order(instances):
+    mapper = {}
+    for order, instance in enumerate(instances):
+        mapper[instance["index"]] = order
+
+    def _transform(index):
+        return mapper[index]
+
+    return _transform
+
+
+def compute_dendrogram_skeleton(instances, top_similar=-1):
+    ''' 
+    Creates the dendrogram format needed for the dendromap with only the necessary items 
+
+    Takes instances that are formated as an array of dicts
+    instances = [{
+        features: float[...],
+        filename: str[...],
+        index: int
+    } ... ]
+
+    and returns the bare minimum skeleton dendrogram that can be exported and used in
+    dendromap user interface
+    '''
+
+    print("Extracting Features")
+    features = extract_features(instances)
+
+    print("Agglomerative Clustering")
+    clusters = hierarchical_cluster(features, method="ward")
+
+    print("Constructing Dendrogram")
+    dendrogram = construct_dendrogram(clusters, connect_parent=True)
+    correct_instance_order_numpy = instance_index_transform_order(
+        instances)  # if the index order is not counting up or scrambled
+
+    # add an array to each node with ids of instances
+    dendrogram.add_cluster_array_to_each_node()
+    # add node count using the cluster array length
+    dendrogram.for_each_node(add_node_count)
+
+    # compute similar if specified
+    has_top_similar = top_similar > 0
+    if has_top_similar:
+        print(f"Computing top {top_similar} similar")
+        dists = pairwise_distance(features)
+        similar_matrix = compute_top_similar(dists, top_similar)
+
+    print(f"Adding information to the leaf nodes")
+    # iterate over the leaves to add the filename and similar (if specified)
+    for leaf in dendrogram.leaves:
+        id = leaf["instance_index"]
+        instance = instances[id]
+        leaf["filename"] = instance["filename"]
+        if has_top_similar:
+            correct_index = correct_instance_order_numpy(instance["index"])
+            leaf["similar"] = similar_matrix[correct_index].tolist()
+
+    print("Done!")
+
+    return dendrogram
 
 
 if __name__ == "__main__":
