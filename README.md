@@ -1,10 +1,24 @@
 # DendroMap Data
 
-This repository contains the data used in the [live site](https://div-lab.github.io/dendromap/) for DendroMap. This readme contains instructions for accessing the data and using your own data.
+This repository contains the data used in the [DendroMap Live Site](https://div-lab.github.io/dendromap/). For use with your own data, keep reading, then navigate to [DendroMap Notebooks](https://github.com/div-lab/dendromap-notebooks) for example code.
 
-### Accessing the Data
+### Using your own Data
 
-The file structure is specified used in this repository defines how our program uses the data. For example for the CIFAR-10 dataset from ResNet50 activations the file structure is the following:
+To give an example, if I downloaded the cifar10 data from this repository, I would put the cifar10 folder in the `public` folder in my local server in the [DendroMap Code](https://github.com/div-lab/dendromap).
+
+I would then connect the data to [DendroMap Code](https://github.com/div-lab/dendromap) by adding an object in the options array inside of `src/main.js`. It must have the following format:
+
+```javascript
+{
+	dataset: "YOUR DATASET NAME",
+	model: "YOUR MODEL NAME",
+	cluster_filepath: "CLUSTER_FILEPATH",
+	class_cluster_filepath: "CLASS_CLUSTER_FILEPATH**OPTIONAL**",
+	image_filepath: "IMAGE_FILEPATH",
+}
+```
+
+In the case of the cifar10 data in this repository,
 
 ```text
 📦 cifar10
@@ -18,34 +32,27 @@ The file structure is specified used in this repository defines how our program 
 ┗ ┗ 📜 test-9999.png
 ```
 
-You can specify where the files are located through an object of the following format:
+since it has this file structure, I would connect it by adding this object:
 
 ```javascript
 {
 	dataset: "CIFAR-10",
-	model: "ResNet-50",
-	cluster_filepath: "https://div-lab.github.io/dendromap-data/cifar10/clusters/cifar10_resnet50.json",
-	class_cluster_filepath: "https://div-lab.github.io/dendromap-data/cifar10/clusters/cifar10_resnet50_classes.json",
-	image_filepath:"https://div-lab.github.io/dendromap-data/cifar10/images",
+	model: "ResNet50",
+	cluster_filepath: "cifar10/clusters/cifar10_resnet50.json",
+	class_cluster_filepath: "cifar10/clusters/cifar10_resnet50_classes.json",
+	image_filepath: "cifar10/images",
 }
 ```
 
-By adding this to the array of objects in the _options_ array in `src/main.js` in the User Interface Code, you add another option to the dropdown menu for you to use.
+Then this option will show up in the dataset selection dropdown in the user interface.
 
-### Using your own Data
+You can generate your own data using python functions we created in the [DendroMap Notebooks](https://github.com/div-lab/dendromap-notebooks) repository. The notebooks that generated the datafiles in this repository also live there as examples.
 
-You can generate your own data using python functions we created in the [dendromap-notebooks](https://github.com/div-lab/dendromap-notebooks) repository. The notebooks that generated the datafiles in this repository also live there as examples.
+Once you've generated your own files, put them in the `public` folder in the [DendroMap Code](https://github.com/div-lab/dendromap), then add another option in `src/main.js` as shown above with the cifar10 example.
 
-Once you've generated your own files, put them in the `public` folder in the Svelte User Interface Code, then add another option in `src/main.js` just like in the previous example.
+### Links
 
-```javascript
-{
-	dataset: "YOUR DATASET NAME",
-	model: "YOUR MODEL NAME",
-	cluster_filepath: "CLUSTER_FILEPATH",
-	class_cluster_filepath: "CLASS_CLUSTER_FILEPATH/OPTIONAL",
-	image_filepath: "IMAGE_FILEPATH",
-}
-```
-
-The `class_cluster_filepath` is optional and will allow for class filtering if it is present. For example, it is not present in VAE and MNIST dataset.
+-   [DendroMap Live Site](https://div-lab.github.io/dendromap/)
+-   [DendroMap Code](https://github.com/div-lab/dendromap)
+-   [DendroMap Data](https://github.com/div-lab/dendromap-data) **(you are here)**
+-   [DendroMap Notebooks](https://github.com/div-lab/dendromap-notebooks)
