@@ -6,6 +6,7 @@ This repository contains the data used in the [live site](https://div-lab.github
 
 The file structure is specified used in this repository defines how our program uses the data. For example for the CIFAR-10 dataset from ResNet50 activations the file structure is the following:
 
+```text
 📦 cifar10
 ┣ 📂 clusters
 ┃ ┣ 📜 cifar10_resnet50.json
@@ -13,8 +14,9 @@ The file structure is specified used in this repository defines how our program 
 ┣ 📂 images
 ┃ ┣ 📜 test-0.png
 ┃ ┣ 📜 test-1.png
-...  
+...
 ┗ ┗ 📜 test-9999.png
+```
 
 You can specify where the files are located through an object of the following format:
 
