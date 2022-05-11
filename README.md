@@ -2,7 +2,7 @@
 
 This repository contains the data used in the [DendroMap Live Site](https://div-lab.github.io/dendromap/). For use with your own data, keep reading, then navigate to [DendroMap Notebooks](https://github.com/div-lab/dendromap-notebooks) for example code.
 
-### Using your own Data
+## Using your own Data
 
 To give an example, if I downloaded the cifar10 data from this repository, I would put the cifar10 folder in the `public` folder in my local server in the [DendroMap Code](https://github.com/div-lab/dendromap).
 
@@ -50,7 +50,7 @@ You can generate your own data using python functions we created in the [DendroM
 
 Once you've generated your own files, put them in the `public` folder in the [DendroMap Code](https://github.com/div-lab/dendromap), then add another option in `src/main.js` as shown above with the cifar10 example.
 
-### Links
+## Links
 
 -   [DendroMap Live Site](https://div-lab.github.io/dendromap/)
 -   [DendroMap Code](https://github.com/div-lab/dendromap)
