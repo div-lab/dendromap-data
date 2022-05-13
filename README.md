@@ -1,6 +1,6 @@
 # DendroMap Data
 
-This repository contains the data used in the [DendroMap Live Site](https://div-lab.github.io/dendromap/). For use with your own data, keep reading, then navigate to [DendroMap Notebooks](https://github.com/div-lab/dendromap-notebooks) for example code.
+This repository contains the data used in the [DendroMap Live Site](https://div-lab.github.io/dendromap/). For use with your own data, keep reading, then navigate to [DendroMap Code](https://github.com/div-lab/dendromap) for example code.
 
 ## Using your own Data
 
@@ -46,14 +46,13 @@ since it has this file structure, I would connect it by adding this object:
 
 Then this option will show up in the dataset selection dropdown in the user interface.
 
-You can generate your own data using python functions we created in the [DendroMap Notebooks](https://github.com/div-lab/dendromap-notebooks) repository. The notebooks that generated the datafiles in this repository also live there as examples.
+You can generate your own data using python functions we created in the [DendroMap Code](https://github.com/div-lab/dendromap) repository with instructions and clustering code in the `clustering` folder. The notebooks that generated the datafiles in this repository also live there as examples.
 
 Once you've generated your own files, put them in the `public` folder in the [DendroMap Code](https://github.com/div-lab/dendromap), then add another option in `src/dataOptions.js` as shown above with the cifar10 example.
 
 ## Links
 
 -   [DendroMap Live Site](https://div-lab.github.io/dendromap/)
--   [DendroMap Paper](https://arxiv.org/) change this
+-   [DendroMap Paper](https://arxiv.org/) change this when paper is uploaded
 -   [DendroMap Code](https://github.com/div-lab/dendromap)
 -   [DendroMap Data](https://github.com/div-lab/dendromap-data) (**you are here**)
--   [DendroMap Notebooks](https://github.com/div-lab/dendromap-notebooks)
