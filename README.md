@@ -53,6 +53,6 @@ Once you've generated your own files, put them in the `public` folder in the [De
 ## Links
 
 -   [DendroMap Live Site](https://div-lab.github.io/dendromap/)
--   [DendroMap Paper](https://arxiv.org/) change this when paper is uploaded
+-   [DendroMap Paper](https://arxiv.org/abs/2205.06935)
 -   [DendroMap Code](https://github.com/div-lab/dendromap)
 -   [DendroMap Data](https://github.com/div-lab/dendromap-data) (**you are here**)
